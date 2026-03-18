@@ -1,0 +1,10 @@
+{
+  "description": "猛犸平台 AK/SK 认证配置",
+  "base_url": "http://easyopenapi-gy.service.163.org",
+  "access_key": "YOUR_ACCESS_KEY",
+  "secret_key": "YOUR_SECRET_KEY",
+  "product": "smart_ep",
+  "user": "your_email@corp.netease.com",
+  "datasource_id": 832,
+  "catalog_name": "hz8-hive-catalog"
+}

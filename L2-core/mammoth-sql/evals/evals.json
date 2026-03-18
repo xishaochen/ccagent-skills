@@ -1,0 +1,84 @@
+{
+  "skill_name": "mammoth-sql",
+  "evals": [
+    {
+      "id": 1,
+      "name": "cte-insert-order",
+      "prompt": "基于 yidun_dw.ads_yidun_cst_aigc_dd 表，创建一个结果表，统计每个cid在不同月份的前12个月净收入。需要使用CTE来计算滚动收入，然后INSERT到结果表。",
+      "expected_output": "SQL中CTE应该放在INSERT之前，格式为：WITH ... INSERT OVERWRITE ... SELECT",
+      "assertions": [
+        {
+          "name": "cte_before_insert",
+          "description": "CTE必须在INSERT之前",
+          "type": "regex_match",
+          "pattern": "^\\s*WITH\\s+\\w+\\s+AS\\s*\\([\\s\\S]*\\)\\s*INSERT\\s+OVERWRITE",
+          "flags": ["multiline"]
+        },
+        {
+          "name": "no_insert_before_with",
+          "description": "INSERT不能在WITH之前",
+          "type": "regex_not_match",
+          "pattern": "INSERT\\s+OVERWRITE[\\s\\S]*WITH\\s+\\w+\\s+AS",
+          "flags": ["multiline"]
+        }
+      ],
+      "files": []
+    },
+    {
+      "id": 2,
+      "name": "chinese-alias-rule",
+      "prompt": "从 yidun_dw.dwd_yidun_income_record_dd 查询各产品线的客户数和收入金额，要求最终输出的列名使用中文。",
+      "expected_output": "SELECT最终输出使用中文别名（反引号包围），CTE中使用英文列名",
+      "assertions": [
+        {
+          "name": "final_select_chinese_alias",
+          "description": "最终SELECT使用中文别名",
+          "type": "regex_match",
+          "pattern": "SELECT[\\s\\S]*AS\\s*`[^`]+[\\u4e00-\\u9fa5]+[^`]*`",
+          "flags": ["multiline"]
+        },
+        {
+          "name": "cte_no_chinese_column",
+          "description": "CTE中使用英文列名",
+          "type": "regex_not_match",
+          "pattern": "WITH\\s+\\w+\\s+AS\\s*\\([\\s\\S]*AS\\s*`[^`]*[\\u4e00-\\u9fa5]+[^`]*`[\\s\\S]*\\)\\s*,?\\s*(?:\\w+\\s+AS|SELECT|INSERT)",
+          "flags": ["multiline"]
+        }
+      ],
+      "files": []
+    },
+    {
+      "id": 3,
+      "name": "income-table-rules",
+      "prompt": "统计易盾2025年各产品线的外部客户收入，使用 dwd_yidun_income_record_dd 表。",
+      "expected_output": "必须包含：pt_d分区条件、customersource过滤、tradetime日期限制、amount/1.06去税",
+      "assertions": [
+        {
+          "name": "partition_filter",
+          "description": "必须使用pt_d分区条件",
+          "type": "regex_match",
+          "pattern": "pt_d\\s*=\\s*'\\$\\{pre_1day\\}'"
+        },
+        {
+          "name": "customer_source_filter",
+          "description": "必须过滤内部客户",
+          "type": "regex_match",
+          "pattern": "customersource\\s+NOT\\s+IN\\s*\\(1,2,4,5,10,9\\)"
+        },
+        {
+          "name": "trade_date_filter",
+          "description": "必须限制收入日期",
+          "type": "regex_match",
+          "pattern": "substr\\s*\\(\\s*tradetime\\s*,\\s*1\\s*,\\s*10\\s*\\)\\s*<=\\s*'\\$\\{pre_1day\\}'"
+        },
+        {
+          "name": "tax_deduction",
+          "description": "金额必须除以1.06去税",
+          "type": "regex_match",
+          "pattern": "amount\\s*/\\s*1\\.06"
+        }
+      ],
+      "files": []
+    }
+  ]
+}

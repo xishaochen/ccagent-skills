@@ -1,0 +1,14 @@
+{
+  "成本": ["consume", "cost", "cor_cost", "消耗", "费用", "净收入"],
+  "回款": ["payamount", "payment", "remit", "收款"],
+  "收入": ["income", "revenue", "arr", "mrr", "net_income"],
+  "在服": ["is_using", "service", "cur_status"],
+  "客户": ["customer", "cid", "clouduserid", "corpname"],
+  "流失": ["loss", "churn", "lost"],
+  "新客": ["new_customer", "new_cnt", "fst_remittime"],
+  "销售": ["sales", "owner", "dept"],
+  "业绩": ["performance", "target", "achievement"],
+  "产品": ["product", "servicetype", "sku"],
+  "行业": ["industry", "industrytype"],
+  "等级": ["level", "grade", "membershipgrade"]
+}
