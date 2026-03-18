@@ -1,5 +1,5 @@
 ---
-name: mammoth-tbl-explorer
+name: mm-tbl-explore
 description: 猛犸数据表探索器 - 查询Hive表的元数据信息，包括表结构、字段血缘、表血缘、分区列表。当用户需要查看猛犸/Hive表结构、查询数据血缘关系、查看表分区、了解表上下游依赖时使用此技能。触发词：表结构、DDL、DESCRIBE、血缘、分区、猛犸表、Hive表、字段来源、表依赖。
 allowed-tools:
   - Read
@@ -25,43 +25,43 @@ allowed-tools:
 ## 使用方式
 
 ```bash
-/mammoth-tbl-explorer <命令> [参数...]
+/mm-tbl-explore <命令> [参数...]
 ```
 
 ### 命令详情
 
 #### 1. 查询表结构
 ```bash
-/mammoth-tbl-explorer get_table <数据库> <表名>
+/mm-tbl-explore get_table <数据库> <表名>
 ```
-**示例**: `/mammoth-tbl-explorer get_table yidun_dw dws_yidun_cst_service_income_dd`
+**示例**: `/mm-tbl-explore get_table yidun_dw dws_yidun_cst_service_income_dd`
 
 #### 2. 查询字段血缘
 ```bash
-/mammoth-tbl-explorer field_lineage <数据库> <表名> <字段名> <up|down>
+/mm-tbl-explore field_lineage <数据库> <表名> <字段名> <up|down>
 ```
 - `up` - 查询上游血缘（字段来自哪里）
 - `down` - 查询下游血缘（字段被哪些表使用）
 
-**示例**: `/mammoth-tbl-explorer field_lineage yidun_dw dws_table total_income up`
+**示例**: `/mm-tbl-explore field_lineage yidun_dw dws_table total_income up`
 
 #### 3. 查询表血缘
 ```bash
-/mammoth-tbl-explorer table_lineage <数据库> <表名> <up|down>
+/mm-tbl-explore table_lineage <数据库> <表名> <up|down>
 ```
-**示例**: `/mammoth-tbl-explorer table_lineage yidun_dw dws_table up`
+**示例**: `/mm-tbl-explore table_lineage yidun_dw dws_table up`
 
 #### 4. 查看分区列表
 ```bash
-/mammoth-tbl-explorer partitions <数据库> <表名>
+/mm-tbl-explore partitions <数据库> <表名>
 ```
-**示例**: `/mammoth-tbl-explorer partitions yidun_dw dws_table`
+**示例**: `/mm-tbl-explore partitions yidun_dw dws_table`
 
 #### 5. 列出数据库中的表
 ```bash
-/mammoth-tbl-explorer list_tables <数据库>
+/mm-tbl-explore list_tables <数据库>
 ```
-**示例**: `/mammoth-tbl-explorer list_tables yidun_dw`
+**示例**: `/mm-tbl-explore list_tables yidun_dw`
 
 ## 配置说明
 
