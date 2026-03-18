@@ -1,0 +1,79 @@
+{
+  "skill_name": "mammoth-sql-format",
+  "evals": [
+    {
+      "id": 1,
+      "name": "simple-insert-sql",
+      "prompt": "帮我给这段SQL添加详细注释：\n\nset hive.merge.mapredfiles = true;\ninsert OVERWRITE table yidun_dw.dws_yidun_corp_basic_info_dd PARTITION (pt_d = '${pre_1day}')\nselect\n    clouduserid,\n    corpname,\n    membershipgrade,\n    industry_flag,\n    owner_name\nfrom yidun_ods.ods_yidun_corp_info_dd\nwhere pt_d = '${pre_1day}';",
+      "expected_output": "生成带完整文件头注释、参数注释、字段行内注释的格式化SQL",
+      "assertions": [
+        {
+          "name": "has_file_header",
+          "description": "包含完整的文件头注释块",
+          "check": "输出包含 'Author' 和 'Comment' 以及 '【业务说明】'"
+        },
+        {
+          "name": "has_hive_params_comment",
+          "description": "Hive参数有注释说明",
+          "check": "hive.merge.mapredfiles 参数上方或同行有中文注释"
+        },
+        {
+          "name": "has_field_comments",
+          "description": "SELECT字段有行内注释",
+          "check": "clouduserid, corpname 等字段有 '--' 注释"
+        },
+        {
+          "name": "queries_table_structure",
+          "description": "调用了mammoth-tbl-explorer查询表结构",
+          "check": "执行过程中调用了 mammoth_client.py 或 get_table"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "join-with-window-function",
+      "prompt": "请为以下SQL生成代码注释，需要理解首单逻辑：\n\nselect\n    t1.clouduserid,\n    t2.corpname,\n    t3.servicetype_two as first_sku,\n    t3.remittime as first_remit_time\nfrom (\n    select clouduserid from yidun_dw.dws_yidun_corp_basic_info_dd\n    where pt_d = '${pre_1day}'\n) t1\ninner join (\n    select clouduserid, corpname from yidun_dw.dws_yidun_corp_basic_info_dd\n    where pt_d = '${pre_1day}'\n) t2 on t1.clouduserid = t2.clouduserid\ninner join (\n    select\n        clouduserid,\n        servicetype_two,\n        remittime,\n        row_number() over(partition by clouduserid order by remittime) as rn\n    from yidun_dw.dws_yidun_order_info_dd\n    where pt_d = '${pre_1day}'\n) t3 on t1.clouduserid = t3.clouduserid and t3.rn = 1;",
+      "expected_output": "生成带JOIN逻辑注释和窗口函数说明的SQL",
+      "assertions": [
+        {
+          "name": "has_join_comments",
+          "description": "JOIN有业务含义注释",
+          "check": "join 关键字附近有 '--' 注释说明关联目的"
+        },
+        {
+          "name": "has_window_function_comment",
+          "description": "窗口函数有详细注释说明排序规则",
+          "check": "row_number() 或 over() 有注释说明窗口函数用途"
+        },
+        {
+          "name": "has_subquery_comments",
+          "description": "子查询(t1/t2/t3)有注释说明业务含义",
+          "check": "每个子查询上方有 '--' 注释块"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "cte-with-union",
+      "prompt": "帮我格式化这个带CTE和UNION的SQL：\n\nwith base_data as (\n    select clouduserid, payamount\n    from yidun_dw.dws_yidun_order_info_dd\n    where pt_d = '${pre_1day}'\n    and payamount > 0\n),\nrefund_data as (\n    select clouduserid, 0 - refund_amount as payamount\n    from yidun_dw.dws_yidun_order_info_dd\n    where pt_d = '${pre_1day}'\n    and refund_amount > 0\n)\nselect\n    clouduserid,\n    sum(payamount) as total_amount\nfrom (\n    select * from base_data\n    union all\n    select * from refund_data\n) t\ngroup by clouduserid;",
+      "expected_output": "CTE和UNION部分都有清晰的注释说明",
+      "assertions": [
+        {
+          "name": "has_cte_comments",
+          "description": "每个CTE(WITH子句)有注释说明用途",
+          "check": "base_data 和 refund_data 上方有注释"
+        },
+        {
+          "name": "has_union_comment",
+          "description": "UNION有注释说明合并逻辑",
+          "check": "union all 附近有注释说明"
+        },
+        {
+          "name": "has_aggregation_comment",
+          "description": "GROUP BY聚合有注释说明",
+          "check": "group by 或 sum() 有注释说明"
+        }
+      ]
+    }
+  ]
+}

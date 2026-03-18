@@ -1,0 +1,28 @@
+{
+  "eval_id": 1,
+  "eval_name": "simple-insert-sql",
+  "prompt": "帮我给这段SQL添加详细注释：\n\nset hive.merge.mapredfiles = true;\ninsert OVERWRITE table yidun_dw.dws_yidun_corp_basic_info_dd PARTITION (pt_d = '${pre_1day}')\nselect\n    clouduserid,\n    corpname,\n    membershipgrade,\n    industry_flag,\n    owner_name\nfrom yidun_ods.ods_yidun_corp_info_dd\nwhere pt_d = '${pre_1day}';",
+  "expected_output": "生成带完整文件头注释、参数注释、字段行内注释的格式化SQL",
+  "assertions": [
+    {
+      "name": "has_file_header",
+      "description": "包含完整的文件头注释块",
+      "check": "输出包含 'Author' 和 'Comment' 以及 '【业务说明】'"
+    },
+    {
+      "name": "has_hive_params_comment",
+      "description": "Hive参数有注释说明",
+      "check": "hive.merge.mapredfiles 参数上方或同行有中文注释"
+    },
+    {
+      "name": "has_field_comments",
+      "description": "SELECT字段有行内注释",
+      "check": "clouduserid, corpname 等字段有 '--' 注释"
+    },
+    {
+      "name": "queries_table_structure",
+      "description": "调用了mammoth-tbl-explorer查询表结构",
+      "check": "执行过程中调用了 mammoth_client.py 或 get_table"
+    }
+  ]
+}
