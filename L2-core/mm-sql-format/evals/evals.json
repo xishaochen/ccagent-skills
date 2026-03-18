@@ -24,7 +24,7 @@
         },
         {
           "name": "queries_table_structure",
-          "description": "调用了mammoth-tbl-explorer查询表结构",
+          "description": "调用了mm-tbl-explore查询表结构",
           "check": "执行过程中调用了 mammoth_client.py 或 get_table"
         }
       ]

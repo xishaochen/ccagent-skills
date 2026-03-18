@@ -15,7 +15,7 @@
 
 2. 配置认证信息：
    ```bash
-   cd mammoth-tbl-explorer
+   cd mm-tbl-explore
    cp config.example.json config.json
    ```
 
@@ -33,9 +33,9 @@
 ### 在 Claude Code 中使用
 
 ```bash
-/mammoth-tbl-explorer get_table yidun_dw dws_yidun_cst_service_income_dd
-/mammoth-tbl-explorer field_lineage yidun_dw dws_table total_income up
-/mammoth-tbl-explorer partitions yidun_dw dws_table
+/mm-tbl-explore get_table yidun_dw dws_yidun_cst_service_income_dd
+/mm-tbl-explore field_lineage yidun_dw dws_table total_income up
+/mm-tbl-explore partitions yidun_dw dws_table
 ```
 
 ### 命令行使用

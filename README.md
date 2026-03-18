@@ -13,7 +13,7 @@ ccagent-skills/
 ├── L2-core/               # 领域核心技能
 │   │
 │   ├── mammoth-sql/           # 猛犸 SQL 执行器
-│   ├── mammoth-tbl-explorer/  # 猛犸表探索器
+│   ├── mm-tbl-explore/  # 猛犸表探索器
 │   ├── youshu-explorer/       # 有数看板探索器
 │   └── ...
 │
