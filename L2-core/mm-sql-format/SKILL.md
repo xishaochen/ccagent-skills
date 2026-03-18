@@ -177,7 +177,7 @@ join table_b t2 on t1.id = t2.id;
 - 字段包含 `clouduserid` → 推断为客户/账号相关表
 
 ### 表结构查询命令
-使用 `/mammoth-tbl-explorer` 或 `/mammoth-ddl` 技能查询表结构
+使用 `/mammoth-tbl-explorer` 技能查询表结构
 
 ## 版本信息
 
