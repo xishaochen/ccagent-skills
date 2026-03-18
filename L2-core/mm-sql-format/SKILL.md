@@ -161,7 +161,7 @@ join table_b t2 on t1.id = t2.id;
 
 ## 注意事项
 
-1. **必须查询表结构** - 使用mammoth-tbl-explorer查询所有涉及的表DDL，
+1. **必须查询表结构** - 使用mm-tbl-explore查询所有涉及的表DDL，
 获取**准确的表注释和字段注释**
 2. **数据来源注释规范** - 【数据来源】部分的表中文名按以下规则处理：
    - 优先使用查询到的真实表注释
@@ -177,7 +177,7 @@ join table_b t2 on t1.id = t2.id;
 - 字段包含 `clouduserid` → 推断为客户/账号相关表
 
 ### 表结构查询命令
-使用 `/mammoth-tbl-explorer` 技能查询表结构
+使用 `/mm-tbl-explore` 技能查询表结构
 
 ## 版本信息
 
